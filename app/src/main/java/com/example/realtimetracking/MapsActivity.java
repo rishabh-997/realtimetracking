@@ -26,6 +26,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Double latitude, longitude;
     String email;
 
+    Double latitude_sample, longitude_sample;
+    String email_sample;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         longitude = getIntent().getDoubleExtra("Longitude", 0);
         email = getIntent().getStringExtra("Email");
 
-    }
-
-    private void loadlocation() {
-        
+        latitude_sample=26.4621305;
+        longitude_sample=80.3591949;
+        email_sample="chaze@gmail.com";
 
     }
 
@@ -56,19 +58,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
+        /**
+         * firstly created loaction dataset for my Location
+         */
         LatLng mine = new LatLng(latitude, longitude);
         Location myLocation = new Location("");
         myLocation.setLatitude(latitude);
         myLocation.setLongitude(longitude);
 
+        /**
+         * Secondly, Created a marker for my location will be zoomed in as soon as I open the map
+         */
         if (mMap != null) {
             mMap.addMarker(new MarkerOptions()
                     .position(mine)
                     .title(email)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 12.0f));
         }
+
+        /**
+         *  Adding Location dataset for friend :
+         */
+        LatLng friend=new LatLng(latitude_sample,longitude_sample);
+        Location friendLocation=new Location("");
+        friendLocation.setLatitude(latitude_sample);
+        friendLocation.setLongitude(longitude_sample);
+
+        /**
+         * Created aa marker for my Friend will be zoomed in
+         */
+        mMap.addMarker(new MarkerOptions()
+                .position(friend)
+                .title(email_sample)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
     }
 }

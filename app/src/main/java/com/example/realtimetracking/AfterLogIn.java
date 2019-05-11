@@ -1,6 +1,7 @@
 package com.example.realtimetracking;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -39,8 +40,10 @@ public class AfterLogIn extends AppCompatActivity
 
     FusedLocationProviderClient client;
 
-    Button button;
+    Button button,button_show;
     TextView textView;
+
+    Double latitude,longitude,altitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class AfterLogIn extends AppCompatActivity
         databaseReference=firebaseDatabase.getReference().child("Users");
 
         button=findViewById(R.id.button);
+        button_show=findViewById(R.id.show);
         textView=findViewById(R.id.textView);
 
         //initializing client data type to get location
@@ -83,9 +87,9 @@ public class AfterLogIn extends AppCompatActivity
                             {
                                 /**
                                  * Converts recieved cordinates into latitude and longitude*/
-                                Double latitude=location.getLatitude();
-                                Double longitude=location.getLongitude();
-                                Double altitude=location.getAltitude();
+                                latitude=location.getLatitude();
+                                longitude=location.getLongitude();
+                                altitude=location.getAltitude();
                                 String ans="Email id - "+firebaseUser.getEmail()+"\n"+"Latitude - "+latitude+"\n"
                                         +"Longitude - "+longitude+"\n"+"Altitude - "+altitude;
                                 textView.setText(ans);
@@ -108,6 +112,20 @@ public class AfterLogIn extends AppCompatActivity
                             }
                       }
                   });
+            }
+        });
+
+
+        button_show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent map=new Intent(AfterLogIn.this,MapsActivity.class);
+                map.putExtra("Email",firebaseUser.getEmail());
+                map.putExtra("Latitude",latitude);
+                map.putExtra("Longitude",longitude);
+                map.putExtra("Altitude",altitude);
+                startActivity(map);
             }
         });
     }

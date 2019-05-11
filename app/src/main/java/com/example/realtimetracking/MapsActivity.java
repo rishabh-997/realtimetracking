@@ -48,8 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         longitude = getIntent().getDoubleExtra("Longitude", 0);
         email = getIntent().getStringExtra("Email");
 
-        latitude_sample=26.4621305;
-        longitude_sample=80.3591949;
+        latitude_sample=26.8621305;
+        longitude_sample=80.6591949;
         email_sample="chaze@gmail.com";
 
     }
@@ -87,12 +87,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         friendLocation.setLongitude(longitude_sample);
 
         /**
+         * Calculating distance between the two pointers
+         */
+        float distance=(friendLocation.distanceTo(myLocation))/1000;
+
+
+        /**
          * Created aa marker for my Friend will be zoomed in
          */
         mMap.addMarker(new MarkerOptions()
                 .position(friend)
                 .title(email_sample)
+                .snippet(""+distance+" kms")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
 
     }
 }
